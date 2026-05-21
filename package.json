@@ -13,7 +13,9 @@
   "license": "ISC",
   "type": "module",
   "devDependencies": {
+    "@types/bcrypt": "^6.0.0",
     "@types/express": "^5.0.6",
+    "@types/jsonwebtoken": "^9.0.10",
     "@types/node": "^25.9.1",
     "ts-node": "^10.9.2",
     "tsx": "^4.22.3",
@@ -21,8 +23,10 @@
   },
   "dependencies": {
     "@neondatabase/serverless": "^1.1.0",
+    "bcrypt": "^5.1.1",
     "dotenv": "^17.4.2",
     "express": "^5.2.1",
-    "express-types": "^0.0.4"
+    "express-types": "^0.0.4",
+    "jsonwebtoken": "^9.0.3"
   }
 }
