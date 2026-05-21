@@ -179,6 +179,10 @@ export const updateIssueById = async (
     updates.status = status;
   }
 
+  if (reporter.role === "maintainer") {
+    updates.status = "in_progress";
+  }
+
   const updated = await IssueServices.updateIssueById(issueId, updates);
 
   if (!updated) {
