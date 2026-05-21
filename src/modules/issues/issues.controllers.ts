@@ -1,6 +1,9 @@
 import { sendError, sendSuccess } from "../../utility/utility.js";
 import type { Request, Response } from "express";
-import type { IIssueCreationRequest } from "./issues.interfaces.js";
+import type {
+  IIssueCreationRequest,
+  IIssueQueryParams,
+} from "./issues.interfaces.js";
 import { IssueServices } from "./issues.services.js";
 
 export const createNewIssue = async (req: Request, res: Response) => {
@@ -39,8 +42,30 @@ export const createNewIssue = async (req: Request, res: Response) => {
   return sendSuccess(res, 201, "Issue created successfully", created);
 };
 
-export const getAllIssues = async (req: Request, res: Response) => {
-  const issues = await IssueServices.getAllIssues();
+export const getAllIssues = async (
+  req: Request<unknown, unknown, unknown, IIssueQueryParams>,
+  res: Response,
+) => {
+  const filters: IIssueQueryParams = {};
 
-  return sendSuccess(res, 200, "Issues fetched successfully", issues);
+  if (req.query.sort) {
+    filters.sort = req.query.sort;
+  }
+
+  if (req.query.status) {
+    filters.status = req.query.status;
+  }
+
+  if (req.query.type) {
+    filters.type = req.query.type;
+  }
+
+  const issues = await IssueServices.getAllIssues(filters);
+
+  return sendSuccess(
+    res,
+    200,
+    issues.length > 0 ? "Issues fetched successfully" : "No issues found",
+    issues,
+  );
 };
