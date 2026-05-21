@@ -4,8 +4,7 @@ import type { IIssueCreationRequest } from "./issues.interfaces.js";
 import { IssueServices } from "./issues.services.js";
 
 export const createNewIssue = async (req: Request, res: Response) => {
-  const { title, description, type } =
-    req.body as IIssueCreationRequest;
+  const { title, description, type } = req.body as IIssueCreationRequest;
 
   if (!title || !description || !type) {
     return sendError(res, 400, "title, description, and type are required");
