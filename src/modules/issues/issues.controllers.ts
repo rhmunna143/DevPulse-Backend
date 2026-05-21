@@ -69,3 +69,22 @@ export const getAllIssues = async (
     issues,
   );
 };
+
+export const getIssueById = async (
+  req: Request<{ id: string }>,
+  res: Response,
+) => {
+  const issueId = Number(req.params.id);
+
+  if (!Number.isInteger(issueId) || issueId <= 0) {
+    return sendError(res, 400, "invalid issue id");
+  }
+
+  const issue = await IssueServices.getIssueById(issueId);
+
+  if (!issue) {
+    return sendError(res, 404, "issue not found");
+  }
+
+  return sendSuccess(res, 200, "Issue fetched successfully", issue);
+};

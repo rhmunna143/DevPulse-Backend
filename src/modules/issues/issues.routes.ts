@@ -1,5 +1,9 @@
 import { Router } from "express";
-import { createNewIssue, getAllIssues } from "./issues.controllers.js";
+import {
+  createNewIssue,
+  getAllIssues,
+  getIssueById,
+} from "./issues.controllers.js";
 import {
   authMiddleware,
   authorizeRole,
@@ -15,3 +19,5 @@ issuesRouter.post(
 );
 
 issuesRouter.get("/issues", getAllIssues);
+
+issuesRouter.get("/issues/:id", getIssueById);

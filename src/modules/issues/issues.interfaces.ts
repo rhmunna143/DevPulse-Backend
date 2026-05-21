@@ -32,6 +32,8 @@ export interface IIssueListResponse {
   updated_at: Date;
 }
 
+export type IIssueSingleResponse = IIssueListResponse;
+
 export interface IIssueQueryParams {
   sort?: "newest" | "oldest";
   status?: "open" | "in_progress" | "resolved";
