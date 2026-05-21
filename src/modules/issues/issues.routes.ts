@@ -3,6 +3,7 @@ import {
   createNewIssue,
   getAllIssues,
   getIssueById,
+  updateIssueById,
 } from "./issues.controllers.js";
 import {
   authMiddleware,
@@ -21,3 +22,17 @@ issuesRouter.post(
 issuesRouter.get("/issues", getAllIssues);
 
 issuesRouter.get("/issues/:id", getIssueById);
+
+issuesRouter.patch(
+  "/issues/:id",
+  authMiddleware,
+  authorizeRole("contributor", "maintainer"),
+  updateIssueById,
+);
+
+issuesRouter.put(
+  "/issues/:id",
+  authMiddleware,
+  authorizeRole("contributor", "maintainer"),
+  updateIssueById,
+);

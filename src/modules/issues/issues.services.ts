@@ -77,13 +77,7 @@ export class IssueServices {
   static async getIssueById(
     issueId: number,
   ): Promise<IIssueSingleResponse | null> {
-    const rows = (await sql`
-      SELECT id, title, description, type, status, reporter_id, created_at, updated_at
-      FROM issues
-      WHERE id = ${issueId}
-    `) as IIssueResponse[];
-
-    const issue = rows[0];
+    const issue = await this.getIssueRecordById(issueId);
 
     if (!issue) {
       return null;
@@ -111,5 +105,39 @@ export class IssueServices {
       created_at: issue.created_at,
       updated_at: issue.updated_at,
     } as IIssueSingleResponse;
+  }
+
+  static async getIssueRecordById(issueId: number) {
+    const rows = (await sql`
+      SELECT id, title, description, type, status, reporter_id, created_at, updated_at
+      FROM issues
+      WHERE id = ${issueId}
+    `) as IIssueResponse[];
+
+    return rows[0] ?? null;
+  }
+
+  static async updateIssueById(
+    issueId: number,
+    updates: {
+      title?: string;
+      description?: string;
+      type?: "bug" | "feature_request";
+      status?: "open" | "in_progress" | "resolved";
+    },
+  ) {
+    const rows = (await sql`
+      UPDATE issues
+      SET
+        title = COALESCE(${updates.title ?? null}, title),
+        description = COALESCE(${updates.description ?? null}, description),
+        type = COALESCE(${updates.type ?? null}, type),
+        status = COALESCE(${updates.status ?? null}, status),
+        updated_at = NOW()
+      WHERE id = ${issueId}
+      RETURNING id, title, description, type, status, reporter_id, created_at, updated_at
+    `) as IIssueResponse[];
+
+    return rows[0] ?? null;
   }
 }

@@ -4,6 +4,13 @@ export interface IIssueCreationRequest {
   type: "bug" | "feature_request";
 }
 
+export interface IIssueUpdateRequest {
+  title?: string;
+  description?: string;
+  type?: "bug" | "feature_request";
+  status?: "open" | "in_progress" | "resolved";
+}
+
 export interface IIssueResponse {
   id: number;
   title: string;
