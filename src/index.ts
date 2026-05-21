@@ -1,5 +1,6 @@
 import express, { Router, type Request, type Response } from "express";
 import config from "./config/config.js";
+import { initDB } from "./db/db.js";
 
 export const app = express();
 const port = config.port;
@@ -22,6 +23,8 @@ app.get("/", (req: Request, res: Response) => {
 
 // server listening
 app.listen(port, () => {
+  initDB();
+  
   console.log(
     `Example app listening on port ${port}.\n Open http://localhost:${port}/ to inspect your server`,
   );
