@@ -1,6 +1,7 @@
 import { Router } from "express";
 import {
   createNewIssue,
+  deleteIssueById,
   getAllIssues,
   getIssueById,
   updateIssueById,
@@ -35,4 +36,11 @@ issuesRouter.put(
   authMiddleware,
   authorizeRole("contributor", "maintainer"),
   updateIssueById,
+);
+
+issuesRouter.delete(
+  "/issues/:id",
+  authMiddleware,
+  authorizeRole("maintainer"),
+  deleteIssueById,
 );

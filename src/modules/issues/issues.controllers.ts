@@ -187,3 +187,28 @@ export const updateIssueById = async (
 
   return sendSuccess(res, 200, "Issue updated successfully", updated);
 };
+
+export const deleteIssueById = async (
+  req: Request<{ id: string }>,
+  res: Response,
+) => {
+  const issueId = Number(req.params.id);
+
+  if (!Number.isInteger(issueId) || issueId <= 0) {
+    return sendError(res, 400, "invalid issue id");
+  }
+
+  const issue = await IssueServices.getIssueRecordById(issueId);
+
+  if (!issue) {
+    return sendError(res, 404, "issue not found");
+  }
+
+  const deleted = await IssueServices.deleteIssueById(issueId);
+
+  if (!deleted) {
+    return sendError(res, 404, "issue not found");
+  }
+
+  return sendSuccess(res, 200, "Issue deleted successfully", null);
+};

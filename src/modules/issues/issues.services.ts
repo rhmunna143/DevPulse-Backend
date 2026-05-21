@@ -140,4 +140,14 @@ export class IssueServices {
 
     return rows[0] ?? null;
   }
+
+  static async deleteIssueById(issueId: number) {
+    const rows = (await sql`
+      DELETE FROM issues
+      WHERE id = ${issueId}
+      RETURNING id
+    `) as Array<{ id: number }>;
+
+    return rows[0] ?? null;
+  }
 }
