@@ -50,7 +50,6 @@ export class IssueServices {
           SELECT id, name, role
           FROM users
           WHERE id = ${issue.reporter_id}
-          LIMIT 1
         `) as IIssueReporter[];
 
         const reporter = reporterRows[0];
@@ -94,7 +93,6 @@ export class IssueServices {
       SELECT id, name, role
       FROM users
       WHERE id = ${issue.reporter_id}
-      LIMIT 1
     `) as IIssueReporter[];
 
     const reporter = reporterRows[0];
