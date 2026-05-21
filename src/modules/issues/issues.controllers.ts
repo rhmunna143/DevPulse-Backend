@@ -38,3 +38,9 @@ export const createNewIssue = async (req: Request, res: Response) => {
 
   return sendSuccess(res, 201, "Issue created successfully", created);
 };
+
+export const getAllIssues = async (req: Request, res: Response) => {
+  const issues = await IssueServices.getAllIssues();
+
+  return sendSuccess(res, 200, "Issues fetched successfully", issues);
+};

@@ -18,4 +18,14 @@ export class IssueServices {
 
     return rows[0];
   }
+
+  static async getAllIssues() {
+    const rows = (await sql`
+      SELECT id, title, description, type, status, reporter_id, created_at, updated_at
+      FROM issues
+      ORDER BY created_at DESC -- sorting in DESCENDING --> Newest
+    `) as IIssueResponse[];
+
+    return rows;
+  }
 }

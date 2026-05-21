@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { createNewIssue } from "./issues.controllers.js";
+import { createNewIssue, getAllIssues } from "./issues.controllers.js";
 import {
   authMiddleware,
   authorizeRole,
@@ -13,3 +13,5 @@ issuesRouter.post(
   authorizeRole("contributor", "maintainer"),
   createNewIssue,
 );
+
+issuesRouter.get("/issues", getAllIssues);
