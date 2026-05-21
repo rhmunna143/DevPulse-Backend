@@ -1,7 +1,9 @@
 import type {
   IIssueCreationRequest,
   IIssueQueryParams,
+  IIssueListResponse,
   IIssueResponse,
+  IIssueReporter,
 } from "./issues.interfaces.js";
 import { sql } from "../../db/db.js";
 
@@ -41,6 +43,34 @@ export class IssueServices {
           ORDER BY created_at DESC
         `)) as IIssueResponse[];
 
-    return rows;
+    const issuesWithReporter = await Promise.all(
+      rows.map(async (issue) => {
+        const reporterRows = (await sql`
+          SELECT id, name, role
+          FROM users
+          WHERE id = ${issue.reporter_id}
+          LIMIT 1
+        `) as IIssueReporter[];
+
+        const reporter = reporterRows[0];
+
+        if (!reporter) {
+          throw new Error(`Reporter not found for issue ${issue.id}`);
+        }
+
+        return {
+          id: issue.id,
+          title: issue.title,
+          description: issue.description,
+          type: issue.type,
+          status: issue.status,
+          reporter,
+          created_at: issue.created_at,
+          updated_at: issue.updated_at,
+        } as IIssueListResponse;
+      }),
+    );
+
+    return issuesWithReporter;
   }
 }
