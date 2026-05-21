@@ -21,11 +21,13 @@ app.get("/", (req: Request, res: Response) => {
   res.send("Hello World!\nDebPulse Server is running...");
 });
 
+initDB().catch(console.error);
+
 // server listening
 app.listen(port, () => {
-  initDB();
-  
   console.log(
     `Example app listening on port ${port}.\n Open http://localhost:${port}/ to inspect your server`,
   );
 });
+
+export default app;
