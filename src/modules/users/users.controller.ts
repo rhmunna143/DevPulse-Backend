@@ -6,15 +6,9 @@ import {
   sendSuccess,
   signAuthToken,
 } from "../../utility/utility.js";
+import type { IUser } from "./users.interfaces.js";
 
-const buildUserResponse = (user: {
-  id: number;
-  name: string;
-  email: string;
-  role: "contributor" | "maintainer";
-  created_at: Date;
-  updated_at: Date;
-}) => ({
+const buildUserResponse = (user: IUser) => ({
   id: user.id,
   name: user.name,
   email: user.email,
@@ -25,6 +19,7 @@ const buildUserResponse = (user: {
 
 export const signup = async (req: Request, res: Response) => {
   const { name, email, password, role = "contributor" } = req.body;
+
   if (!name || !email || !password) {
     return sendError(res, 400, "name, email and password are required");
   }
@@ -56,7 +51,7 @@ export const login = async (req: Request, res: Response) => {
   }
 
   const match = await bcrypt.compare(password, user.password);
-  
+
   if (!match) {
     return sendError(res, 401, "invalid credentials");
   }
