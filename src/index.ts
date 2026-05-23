@@ -1,5 +1,6 @@
 import express, { type Request, type Response } from "express";
 import config from "./config/config.js";
+import cors from "cors";
 import { initDB } from "./db/db.js";
 import { globalErrorHandler } from "./utility/utility.js";
 import { usersRouter } from "./modules/users/users.routes.js";
@@ -9,6 +10,7 @@ export const app = express();
 const port = config.port;
 
 // middlewares call
+app.use(cors({ origin: config.frontend_url }));
 app.use(express.json());
 app.use(express.text());
 app.use(express.urlencoded());
